@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>J.A.R.V.I.S Control Center</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- ========= BOOT SCREEN ========= -->
+    <div id="boot-screen">
+        <div class="boot-logo-ring">
+            <div class="boot-orb"></div>
+        </div>
+        <div class="boot-text">INITIALIZING J.A.R.V.I.S CORE</div>
+        <div class="boot-subtext">LOADING MODULES: VISION · SECURITY · KNOWLEDGE · AUTOPILOT</div>
+        <div class="boot-bar">
+            <div class="boot-bar-fill"></div>
+        </div>
+        <div class="boot-scanline"></div>
+    </div>
+
+    <!-- ========= MAIN HUD ========= -->
+    <div id="hud" class="hidden">
+        <div class="hud-frame">
+
+            <!-- TOP BAR -->
+            <header class="hud-topbar">
+                <div class="hud-brand">
+                    <div class="hud-brand-orb"></div>
+                    <div>
+                        <div class="hud-brand-title">J.A.R.V.I.S</div>
+                        <div class="hud-brand-subtitle">PERSONAL AI CONTROL CENTER</div>
+                    </div>
+                </div>
+
+                <div class="hud-top-stats">
+                    <div class="chip chip-online">
+                        <span class="chip-dot"></span>
+                        LINK: ONLINE
+                    </div>
+                    <div class="chip chip-mode">
+                        WAKE WORD: <span>"jarvis"</span>
+                    </div>
+                    <div class="chip chip-mini">
+                        SECURITY: <span id="security-indicator">IDLE</span>
+                    </div>
+                    <div class="chip chip-mini">
+                        KB: <span>NOTES / PDF RAG</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- GRID LAYOUT -->
+            <div class="hud-grid">
+
+                <!-- LEFT COLUMN -->
+                <div class="hud-col hud-col-left">
+
+                    <!-- SYSTEM STATUS PANEL -->
+                    <section class="hud-panel panel-glow">
+                        <div class="panel-header">
+                            <span class="panel-title">SYSTEM STATUS</span>
+                            <span class="panel-pill">CORE</span>
+                        </div>
+
+                        <div class="system-stats">
+                            <div class="stat-row">
+                                <span class="stat-label">VOICE LINK</span>
+                                <span class="stat-value stat-ok">ONLINE</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">INTERFACE MODE</span>
+                                <span class="stat-value">HANDS-FREE + TEXT</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">TIME</span>
+                                <span class="stat-value" id="hud-time">--:--:--</span>
+                            </div>
+                            <div class="stat-row">
+                                <span class="stat-label">BATTERY</span>
+                                <span class="stat-value" id="hud-battery">--%</span>
+                            </div>
+                        </div>
+
+                        <div class="divider-label">SECURITY</div>
+                        <div class="security-summary">
+                            <div class="security-pill">FACE ID LINKED</div>
+                            <div class="security-pill security-pill-soft">
+                                SAY: <span>"enable security mode"</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- RADAR / SENSOR PANEL -->
+                    <section class="hud-panel panel-glow">
+                        <div class="panel-header">
+                            <span class="panel-title">SENSOR FEED</span>
+                            <span class="panel-pill">VISION</span>
+                        </div>
+
+                        <div class="radar-wrap">
+                            <div class="radar">
+                                <div class="radar-ring r1"></div>
+                                <div class="radar-ring r2"></div>
+                                <div class="radar-ring r3"></div>
+                                <div class="radar-sweep"></div>
+                                <div class="radar-center"></div>
+                            </div>
+                        </div>
+
+                        <ul class="sensor-log">
+                            <li>&gt; Hand gestures ready.</li>
+                            <li>&gt; Face recognition module armed.</li>
+                            <li>&gt; Intruder watcher: STANDBY.</li>
+                        </ul>
+                    </section>
+                </div>
+
+                <!-- CENTER COLUMN -->
+                <div class="hud-col hud-col-center">
+                    <!-- ORB + HINT -->
+                    <div class="hud-center-header">
+                        <div class="hud-orb-ring">
+                            <div class="hud-orb-core"></div>
+                            <div class="hud-orb-pulse"></div>
+                        </div>
+                        <div class="hud-center-text">
+                            <div class="hud-center-title">ALWAYS LISTENING</div>
+                            <div class="hud-center-subtitle">
+                                SAY <span>"JARVIS"</span> THEN YOUR COMMAND — OR TYPE BELOW
+                            </div>
+                            <div class="hud-center-tags">
+                                <span class="tag">REMINDERS</span>
+                                <span class="tag">STUDY PLANS</span>
+                                <span class="tag">KNOWLEDGE BASE</span>
+                                <span class="tag">SYSTEM CONTROL</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CONSOLE -->
+                    <main class="hud-console">
+                        <div class="console-inner">
+                            <div id="chat-box"></div>
+                            <div class="console-overlay-lines"></div>
+                        </div>
+
+                        <!-- NEW MESSAGES + PROCESSING INDICATORS -->
+                        <div id="new-msg-indicator" class="new-msg-indicator hidden">
+                            ▾ NEW MESSAGES BELOW ▾
+                        </div>
+                        <div id="processing-indicator" class="processing-indicator hidden">
+                            <div class="processing-bar"></div>
+                            <span>PROCESSING...</span>
+                        </div>
+
+                        <!-- COMMAND INPUT BAR -->
+                        <div class="command-bar">
+                            <div class="command-hint">
+                                QUICK EXAMPLES:
+                                <span>remind me in 10 minutes...</span>
+                                <span>help me learn dsa</span>
+                                <span>search my notes for...</span>
+                            </div>
+                            <div class="command-input-row">
+                                <input
+                                    type="text"
+                                    id="text-command"
+                                    autocomplete="off"
+                                    placeholder="Type a command... (e.g. &quot;remind me at 8 pm to study&quot;)"
+                                />
+                                <button id="send-command">
+                                    <span class="btn-glow-dot"></span>
+                                    SEND
+                                </button>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+
+                <!-- RIGHT COLUMN -->
+                <div class="hud-col hud-col-right">
+
+                    <!-- AUDIO CHANNEL -->
+                    <section class="hud-panel panel-glow">
+                        <div class="panel-header">
+                            <span class="panel-title">AUDIO CHANNEL</span>
+                            <span class="panel-pill">VOICE I/O</span>
+                        </div>
+
+                        <div class="audio-bars">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+
+                        <div class="audio-text">
+                            Wake phrase: <span>"Jarvis"</span><br>
+                            Then speak your command naturally.
+                        </div>
+                    </section>
+
+                    <!-- LOG FEED -->
+                    <section class="hud-panel panel-glow">
+                        <div class="panel-header">
+                            <span class="panel-title">LOG FEED</span>
+                            <span class="panel-pill">STREAM</span>
+                        </div>
+                        <ul class="log-feed">
+                            <li>&gt; Initializing JARVIS core...</li>
+                            <li>&gt; Voice recognition engaged...</li>
+                            <li>&gt; Awaiting "Jarvis" hotword...</li>
+                            <li>&gt; Knowledge base: READY.</li>
+                        </ul>
+                    </section>
+
+                    <!-- QUICK MODES -->
+                    <section class="hud-panel panel-glow hud-status-mini">
+                        <div class="quick-modes">
+                            <div class="qm-block">
+                                <div class="qm-label">REMINDER ENGINE</div>
+                                <div class="qm-value">ONLINE</div>
+                            </div>
+                            <div class="qm-block">
+                                <div class="qm-label">STUDY PLANNER</div>
+                                <div class="qm-value">READY</div>
+                            </div>
+                            <div class="qm-block">
+                                <div class="qm-label">SECURITY MODE</div>
+                                <div class="qm-value" id="security-small-indicator">IDLE</div>
+                            </div>
+                        </div>
+                        <div class="qm-hint">
+                            Try: <span>"enable security mode"</span> or <span>"help me learn data structures"</span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RED ALERT SOUND (used by app.js) -->
+    <audio id="red-alert-sound" src="{{ url_for('static', filename='red-alert.mp3') }}"></audio>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

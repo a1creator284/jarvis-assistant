@@ -1,0 +1,28 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+.jarvis_env
+*.env
+
+# App data (personal / generated)
+memory.json
+faces/
+screenshot_*.png
+
+# Optional: if knowledge docs are private
+# knowledge_docs/
+# knowledge_index.json
+
+# macOS
+.DS_Store
+
+# VS Code settings
+.vscode/
